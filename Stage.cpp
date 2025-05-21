@@ -1,5 +1,5 @@
 #include "Stage.h"
-
+#include "Input.h"
 namespace
 {
 	//const int IMAGE_SIZE = { 32 };//画像のサイズ
@@ -85,4 +85,8 @@ void Stage::Draw()
 		//	}
 		//}
 	//}
+	if (Input::IsMouseDown()!=0)
+	{
+		DxLib::printfDx("マウスが押された瞬間 ! \n");
+	}
 }
