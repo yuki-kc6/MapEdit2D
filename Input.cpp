@@ -30,12 +30,12 @@ void Input::KeyStateUpdate()
 	}
 	mousePre = mouseNow;//前のフレームのマウスの状態を保存
 	mouseNow=GetMouseInput();//マウスの状態を取得
-	if (mousePre != mouseNow)
-	{
 
-	}
 
 }
+
+
+
 
 bool Input::IsKeyUP(int keyCode)
 {
@@ -56,17 +56,34 @@ int Input::IsKeepKeyDown(int keyCode)
 //mouseNow.mousePre==0　押されていない　!=0は押されてる
 
 
+
+
 bool Input::IsMouseDown()
 {
-	return false;
+	return (mouseNow && !mousePre);
 }
 
 bool Input::IsMouseUP()
 {
-	return ;
+	return (!mouseNow && mousePre);
 }
 
 bool Input::IsMouseKeep()
 {
-	return false;
+	return (mouseNow && mousePre);
+}
+
+bool Input::IsButtonDown(int button)
+{
+	return(((mousePre & button) == 0) && ((mouseNow & button) != 0));
+}
+
+bool Input::IsButtonUP(int button)
+{
+	return (((mousePre & button) != 0 && (mouseNow & button) == 0));
+}
+
+bool Input::IsButtonKeep(int button)
+{
+	return (((mousePre & button) != 0 && (mouseNow & button) != 0));
 }

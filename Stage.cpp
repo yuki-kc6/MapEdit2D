@@ -1,5 +1,6 @@
 #include "Stage.h"
 #include "Input.h"
+#include "Source/Screen.h"
 namespace
 {
 	//const int IMAGE_SIZE = { 32 };//画像のサイズ
@@ -66,7 +67,45 @@ Stage::~Stage()
 
 void Stage::Update()
 {
-
+	//if (Input::IsButtonDown(MOUSE_INPUT_LEFT))
+	//{
+	//	//押された瞬間の処理
+	//	DxLib::printfDx("左が押された!!\n");
+	//}
+	//if (Input::IsButtonDown(MOUSE_INPUT_RIGHT))
+	//{
+	//	//押された瞬間の処理
+	//	DxLib::printfDx("右が押された!!\n");
+	//}
+	//if (Input::IsButtonKeep(MOUSE_INPUT_LEFT))
+	//{
+	//	//押されている間の処理
+	//	DxLib::printfDx("左が押されている!!\n");
+	//}
+	//if (Input::IsButtonKeep(MOUSE_INPUT_RIGHT))
+	//{
+	//	//押されている間の処理
+	//	DxLib::printfDx("右が押されている!!\n");
+	//}
+	//if (Input::IsButtonUP(MOUSE_INPUT_LEFT))
+	//{
+	//	//離された瞬間の処理
+	//	DxLib::printfDx("左が離された!!\n");
+	//}
+	//if (Input::IsButtonUP(MOUSE_INPUT_RIGHT))
+	//{
+	//	//離された瞬間の処理
+	//	DxLib::printfDx("右が離された!!\n");
+	//}
+	//int mx=-1, my=-1;
+	//if (GetMousePoint(&mx, &my) == 0)
+	//{
+	////	DxLib::printfDx("マウスの座標(%d,%d)\n", mx, my);
+	//}
+	//else
+	//{
+	//	DxLib::printfDx("マウスの座標取得失敗\n");
+	//}
 }
 
 void Stage::Draw()
@@ -85,8 +124,5 @@ void Stage::Draw()
 		//	}
 		//}
 	//}
-	if (Input::IsMouseDown()!=0)
-	{
-		DxLib::printfDx("マウスが押された瞬間 ! \n");
-	}
+	
 }

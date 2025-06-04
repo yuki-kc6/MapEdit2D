@@ -1,10 +1,29 @@
 #pragma once
 #include "Library/GameObject.h"
 #include <vector>
+
+struct Point
+{
+    int x;
+    int y;
+};
+struct Rect
+{
+    int x,y;
+    int w,h;
+};
+
 class MapChip :
     public GameObject
+
 {
     std::vector<int> bgHandle_;
+    std::vector<Rect> bgRects_;
+    bool isUpdate_;
+    bool isInMapChipArea_;
+    Point selected_;//選択したマップチップの座標
+    int selectedIndex_;//選択したマップチップのインデックス
+
 public:
     MapChip();
     ~MapChip();
