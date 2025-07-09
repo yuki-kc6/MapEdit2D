@@ -6,6 +6,7 @@
 #include "MapChip.h"
 #include<fstream>
 #include <sstream>
+#include <iostream>
 
 
 
@@ -159,25 +160,24 @@ void MapEdit::SaveMapData()
 					index = mc->GetChipIndex(myMap_[j * MAP_WIDTH + i]);
 				else
 					index = -1;
-				openfile << index << " ";
+
+				if (i == MAP_WIDTH - 1)
+				{
+					openfile << index;
+				}
+				else
+				{
+					openfile << index << ",";
+				}
+
+				
 			}
 			openfile << std::endl;
 		}
 
 		openfile.close();
+		printfDx("File Saved!!!\n");
 	}
-	else
-	{
-		//ファイルの選択がキャンセル
-		printfDx("セーブがキャンセル\n");
-		
-	}
-
-	printfDx("File Saved!!!\n");
-
-	
-	
-	
 }
 
 void MapEdit::LoadMapData()
@@ -206,36 +206,41 @@ void MapEdit::LoadMapData()
 		//ファイルがオープンしたかどうかはチェックが必要
 		std::string line;
 
+		//マップチップの情報を取りたい
 		MapChip* mc = FindGameObject<MapChip>();
 		myMap_.clear();//マップを空に
 		while (std::getline(inputfile, line))
 		{
 			// 空行はスキップ
 			if (line.empty()) continue;
-			printfDx("%s\n", line.c_str());
-			//ここに読み込みの処理を書いていく
+			//printfDx("%s\n", line.c_str());
+			//ここに読み込みの処理を書く
 			if (line[0] != '#')
 			{
 				std::istringstream iss(line);
-				int tmp;//これに一個ずつ読み込んでいく
-				while (iss >> tmp) {
-					if (tmp == -1)
+				std::string tmp;//これに一個ずつ読み込んでいく
+				while (getline(iss, tmp, ',')) {
+					/*if (tmp == -1)
+						myMap_.push_back(-1);
+					else
+						myMap_.push_back(mc->GetHandle(tmp));*/
+					printfDx("%s", tmp.c_str());
+					if (tmp == "-1")
 					{
 						myMap_.push_back(-1);
 					}
 					else
-						myMap_.push_back(mc->GetHandle(tmp));
-					
+					{
+						int index = std::stoi(tmp);
+						int handle = mc->GetHandle(index);
+						myMap_.push_back(handle);//マップにハンドルをセット
+					}
 				}
 			}
-
 		}
 	}
-	else
-	{
-		//ファイルの選択がキャンセル
-		printfDx("セーブがキャンセル\n");
-	}
+
+	
 	
 }
 
