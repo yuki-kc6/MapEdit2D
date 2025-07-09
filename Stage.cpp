@@ -48,6 +48,9 @@ Stage::Stage()
 	//				IMAGE_SIZE, IMAGE_SIZE, bgHandle_.data());
 	mapChip_ = new MapChip();//マップチップのインスタンス
 	mapEdit_ = new MapEdit();//マップエディタのインスタンス
+	//mousePos_.x = -10; //マウスの座標を初期化
+	//mousePos_.y = -10;//マウスの座標を初期化	
+	
 }
 
 Stage::~Stage()
@@ -67,6 +70,9 @@ Stage::~Stage()
 
 void Stage::Update()
 {
+
+
+
 	//if (Input::IsButtonDown(MOUSE_INPUT_LEFT))
 	//{
 	//	//押された瞬間の処理
@@ -123,6 +129,7 @@ void Stage::Draw()
 		//		//DrawRectGraph(i * IMAGE_SIZE, j * IMAGE_SIZE, col*IMAGE_SIZE, row*IMAGE_SIZE , IMAGE_SIZE, IMAGE_SIZE, bgHandle_, true,false);
 		//	}
 		//}
-	//}
+	
+
 	
 }
