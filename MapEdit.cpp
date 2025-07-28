@@ -9,13 +9,12 @@
 #include <iostream>
 
 
-
 MapEdit::MapEdit()
-	:GameObject(), myMap_(MAP_WIDTH* MAP_HEIGHT, -1), //初期値を-1で20＊20の配列を配置
+	:GameObject(),efg_(GetMapEditConfig()), myMap_(efg_.MAPEDIT_WIN_WIDTH * efg_.MAPEDIT_WIN_HEIGHT, -1), //初期値を-1で20＊20の配列を配置
 	isInMapEditArea_(false)
 {
-	mapEditRect_ = { LEFT_MARGIN,TOP_MARGIN,
-		MAP_WIDTH * MAP_IMAGE_SIZE,MAP_HEIGHT * MAP_IMAGE_SIZE };
+	mapEditRect_ = { efg_.LEFT_MARGIN,efg_.TOP_MARGIN,
+		efg_.MAPEDIT_WIN_WIDTH * efg_.MAP_IMAGE_SIZE,efg_.MAPEDIT_WIN_HEIGHT * efg_.MAP_IMAGE_SIZE };
 	
 }
 
@@ -27,17 +26,17 @@ MapEdit::~MapEdit()
 void MapEdit::SetMap(Point p, int value)
 {
 
-	assert(p.x >= 0 && p.x < MAP_WIDTH);
-	assert(p.y >= 0 && p.x < MAP_HEIGHT);
-	myMap_[p.y * MAP_WIDTH + p.x] = value;
+	assert(p.x >= 0 && p.x < efg_.MAPEDIT_WIN_WIDTH);
+	assert(p.y >= 0 && p.x < efg_.MAPEDIT_WIN_HEIGHT);
+	myMap_[p.y * efg_.MAPEDIT_WIN_WIDTH + p.x] = value;
 
 }
 
 int MapEdit::GetMap(Point p) const
 {
-	assert(p.x >= 0 && p.x < MAP_WIDTH);
-	assert(p.y >= 0 && p.x < MAP_HEIGHT);
-	return myMap_[p.y * MAP_WIDTH + p.x];
+	assert(p.x >= 0 && p.x < efg_.MAPEDIT_WIN_WIDTH);
+	assert(p.y >= 0 && p.x < efg_.MAPEDIT_WIN_HEIGHT);
+	return myMap_[p.y * efg_.MAPEDIT_WIN_WIDTH + p.x];
 }
 
 void MapEdit::Update()
@@ -56,11 +55,12 @@ void MapEdit::Update()
 	}
 
 
-	int gridX = (mousePos.x - LEFT_MARGIN) / MAP_IMAGE_SIZE;
-	int gridY = (mousePos.y - TOP_MARGIN) / MAP_IMAGE_SIZE;
+	int gridX = (mousePos.x - efg_.LEFT_MARGIN) / efg_.MAP_IMAGE_SIZE;
+	int gridY = (mousePos.y - efg_.TOP_MARGIN) / efg_.MAP_IMAGE_SIZE;
 	
-	drawAreaRect_ = { LEFT_MARGIN + gridX * MAP_IMAGE_SIZE,TOP_MARGIN + gridY * MAP_IMAGE_SIZE,
-	MAP_IMAGE_SIZE,MAP_IMAGE_SIZE };
+	drawAreaRect_ = { efg_.LEFT_MARGIN + gridX * efg_.MAP_IMAGE_SIZE,
+		efg_.TOP_MARGIN + gridY * efg_.MAP_IMAGE_SIZE,
+		efg_.MAP_IMAGE_SIZE,efg_.MAP_IMAGE_SIZE };
 
 	if (Input::IsButtonKeep(MOUSE_INPUT_LEFT))
 	{
@@ -92,28 +92,36 @@ void MapEdit::Update()
 
 void MapEdit::Draw()
 {
-	for (int j = 0; j < MAP_HEIGHT; j++)
+	for (int j = 0; j < efg_.MAPEDIT_WIN_HEIGHT; j++)
 	{
-		for (int i = 0; i < MAP_WIDTH; i++)
+		for (int i = 0; i < efg_.MAPEDIT_WIN_WIDTH; i++)
 		{
 			int value = GetMap({ i,j });
 			if (value != 1)
 			{
-				DrawGraph(LEFT_MARGIN + i * MAP_IMAGE_SIZE, TOP_MARGIN + j * MAP_IMAGE_SIZE,value, true);
+				DrawGraph(efg_.LEFT_MARGIN + i * efg_.MAP_IMAGE_SIZE, 
+					efg_.TOP_MARGIN + j * efg_.MAP_IMAGE_SIZE,value, true);
 			}
 		}
 	}
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	DrawBox(LEFT_MARGIN, TOP_MARGIN, MAP_WIDTH * MAP_IMAGE_SIZE + LEFT_MARGIN, MAP_HEIGHT * MAP_IMAGE_SIZE + TOP_MARGIN, GetColor(255, 255, 0), false, 3);
+	DrawBox(efg_.LEFT_MARGIN, efg_.TOP_MARGIN, 
+		efg_.MAPEDIT_WIN_WIDTH * efg_.MAP_IMAGE_SIZE + efg_.LEFT_MARGIN, 
+		efg_.MAPEDIT_WIN_HEIGHT * efg_.MAP_IMAGE_SIZE + efg_.TOP_MARGIN, 
+		GetColor(255, 255, 0), false, 3);
 	
-	for (int i = 0; i < MAP_WIDTH; i++) {
-		for (int j = 0; j < MAP_HEIGHT; j++)
+	for (int i = 0; i < efg_.MAPEDIT_WIN_WIDTH; i++) {
+		for (int j = 0; j < efg_.MAPEDIT_WIN_HEIGHT; j++)
 		{
-			DrawLine(i * MAP_IMAGE_SIZE + LEFT_MARGIN, TOP_MARGIN + j * MAP_IMAGE_SIZE, (i + 1) * MAP_IMAGE_SIZE + LEFT_MARGIN, TOP_MARGIN + j * MAP_IMAGE_SIZE, GetColor(255, 255, 255), 0);
+			DrawLine(i * efg_.MAP_IMAGE_SIZE + efg_.LEFT_MARGIN, 
+				efg_.TOP_MARGIN + j * efg_.MAP_IMAGE_SIZE, 
+				(i + 1) * efg_.MAP_IMAGE_SIZE + efg_.LEFT_MARGIN, 
+				efg_.TOP_MARGIN + j * efg_.MAP_IMAGE_SIZE, GetColor(255, 255, 255), 0);
 
 
-			DrawLine(LEFT_MARGIN + i * MAP_IMAGE_SIZE, j * MAP_IMAGE_SIZE + TOP_MARGIN, i * MAP_IMAGE_SIZE + LEFT_MARGIN, (j + 1) * MAP_IMAGE_SIZE + TOP_MARGIN, GetColor(255, 255, 255), 0);
+			DrawLine(efg_.LEFT_MARGIN + i * efg_.MAP_IMAGE_SIZE, 
+				j * efg_.MAP_IMAGE_SIZE + efg_.TOP_MARGIN, i * efg_.MAP_IMAGE_SIZE + efg_.LEFT_MARGIN, (j + 1) * efg_.MAP_IMAGE_SIZE + efg_.TOP_MARGIN, GetColor(255, 255, 255), 0);
 		}
 	}
 	if (isInMapEditArea_)
@@ -152,16 +160,16 @@ void MapEdit::SaveMapData()
 
 		MapChip* mc = FindGameObject<MapChip>();
 
-		for (int j = 0; j < MAP_HEIGHT; j++) {
-			for (int i = 0; i < MAP_WIDTH; i++) {
+		for (int j = 0; j < efg_.MAPEDIT_WIN_HEIGHT; j++) {
+			for (int i = 0; i < efg_.MAPEDIT_WIN_WIDTH; i++) {
 
 				int index;
-				if (myMap_[j * MAP_WIDTH + i] != -1)
-					index = mc->GetChipIndex(myMap_[j * MAP_WIDTH + i]);
+				if (myMap_[j * efg_.MAPEDIT_WIN_WIDTH + i] != -1)
+					index = mc->GetChipIndex(myMap_[j * efg_.MAPEDIT_WIN_WIDTH + i]);
 				else
 					index = -1;
 
-				if (i == MAP_WIDTH - 1)
+				if (i == efg_.MAPEDIT_WIN_WIDTH - 1)
 				{
 					openfile << index;
 				}

@@ -2,14 +2,15 @@
 #include "Library/GameObject.h"
 #include <vector>
 #include "global.h"
-namespace
-{
-    const int MAP_WIDTH{ 20 };
-    const int MAP_HEIGHT{ 20 };
-    const int MAP_IMAGE_SIZE{ 32 };
-    const int LEFT_MARGIN = { 100 };
-    const int TOP_MARGIN = { 40 };
-}
+#include"MapEditConfig.h"
+//namespace
+//{
+//    const int MAP_WIDTH{ 20 };
+//    const int MAP_HEIGHT{ 20 };
+//    const int MAP_IMAGE_SIZE{ 32 };
+//    const int LEFT_MARGIN = { 100 };
+//    const int TOP_MARGIN = { 40 };
+//}
 
 class MapEdit :
     public GameObject
@@ -27,6 +28,9 @@ public:
     void SaveMapData();
     void LoadMapData();
 private:
+
+    MapEditConfig efg_;
+
     std::vector<int>myMap_;//マップの配列
     Rect mapEditRect_;//マップ領域の矩形
     Rect drawAreaRect_;
